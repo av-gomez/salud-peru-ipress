@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+reel/.venv/
+reel/mi_voz.*
+reel/salidas/*.wav
+reel/salidas/escena_*.json
+reel/salidas/log_reel.txt

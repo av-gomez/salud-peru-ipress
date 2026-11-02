@@ -1,0 +1,42 @@
+{
+  "titulo": "¿Dónde te atiendes si te enfermas? La oferta de salud del Perú en datos",
+  "escenas": [
+    {
+      "frase": "¿Dónde te atiendes si te enfermas en el Perú? Analizamos veinte mil setecientos setenta y cuatro establecimientos de salud del registro del MINSA.",
+      "cifra": "20 774",
+      "etiqueta": "Establecimientos en funcionamiento",
+      "visual": "mapa_puntos"
+    },
+    {
+      "frase": "Lima y Callao tienen el treinta y seis por ciento de la población, pero concentran treinta y cuatro de los cincuenta y cinco hospitales de tercer nivel.",
+      "cifra": "34 de 55",
+      "etiqueta": "Hospitales de III nivel en Lima y Callao",
+      "visual": "concentracion"
+    },
+    {
+      "frase": "Dieciséis de los veinticinco departamentos no tienen ningún establecimiento de tercer nivel registrado.",
+      "cifra": "16 de 25",
+      "etiqueta": "Departamentos sin III nivel",
+      "visual": "mapa_iii"
+    },
+    {
+      "frase": "Amazonas tiene casi catorce establecimientos por cada diez mil habitantes, el doble del promedio nacional. Pero siete de cada diez de sus centros públicos son puestos de salud básicos.",
+      "cifra": "72 %",
+      "etiqueta": "Amazonas: públicos de categoría I-1",
+      "visual": "densidad"
+    },
+    {
+      "frase": "Y entre dos mil ocho y dos mil diecisiete, casi nueve de cada diez nuevos establecimientos fueron privados.",
+      "cifra": "9 de 10",
+      "etiqueta": "Altas 2008–2017 que son privadas",
+      "visual": "altas"
+    },
+    {
+      "frase": "Más locales no significa más capacidad. Explora el mapa y filtra por región y nivel en el dashboard.",
+      "cifra": "Dashboard",
+      "etiqueta": "Link en el post · MINSA e INEI",
+      "visual": "dashboard"
+    }
+  ],
+  "posts": {}
+}

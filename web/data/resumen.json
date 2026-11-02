@@ -1,0 +1,124 @@
+{
+ "corte": "septiembre 2017",
+ "n_bruto": 20819,
+ "n_duplicados": 12,
+ "n_no_funcionan": 19,
+ "n_final": 20774,
+ "n_con_coord": 7927,
+ "poblacion_2017": 29381884,
+ "eess_10k_pais": 7.07,
+ "pct_privado_pais": 57.4,
+ "lima_callao_pct_eess": 39.4,
+ "lima_callao_pct_pob": 35.7,
+ "lima_callao_pct_privados": 60.1,
+ "lima_callao_pct_III": 61.8,
+ "n_III": 55,
+ "n_II_III": 531,
+ "pct_publicos_I1": 49.6,
+ "pct_publicos_I": 94.2,
+ "deps_sin_III": [
+  "AMAZONAS",
+  "ANCASH",
+  "APURIMAC",
+  "AYACUCHO",
+  "CAJAMARCA",
+  "HUANCAVELICA",
+  "HUANUCO",
+  "ICA",
+  "MADRE DE DIOS",
+  "MOQUEGUA",
+  "PASCO",
+  "PUNO",
+  "SAN MARTIN",
+  "TACNA",
+  "TUMBES",
+  "UCAYALI"
+ ],
+ "top_eess_10k": [
+  {
+   "departamento": "AMAZONAS",
+   "eess_10k": 13.94,
+   "pct_I1_publicos": 72.41
+  },
+  {
+   "departamento": "HUANCAVELICA",
+   "eess_10k": 13.09,
+   "pct_I1_publicos": 65.48
+  },
+  {
+   "departamento": "TACNA",
+   "eess_10k": 12.69,
+   "pct_I1_publicos": 20.62
+  }
+ ],
+ "bottom_eess_10k": [
+  {
+   "departamento": "LA LIBERTAD",
+   "eess_10k": 3.81
+  },
+  {
+   "departamento": "TUMBES",
+   "eess_10k": 3.96
+  },
+  {
+   "departamento": "ICA",
+   "eess_10k": 4.37
+  }
+ ],
+ "top_hosp_100k": [
+  {
+   "departamento": "MOQUEGUA",
+   "hosp_100k": 3.43
+  },
+  {
+   "departamento": "ICA",
+   "hosp_100k": 3.06
+  },
+  {
+   "departamento": "PASCO",
+   "hosp_100k": 2.76
+  }
+ ],
+ "bottom_hosp_100k": [
+  {
+   "departamento": "HUANUCO",
+   "hosp_100k": 0.69
+  },
+  {
+   "departamento": "UCAYALI",
+   "hosp_100k": 0.81
+  },
+  {
+   "departamento": "LAMBAYEQUE",
+   "hosp_100k": 1.0
+  }
+ ],
+ "altas_por_periodo": {
+  "hasta 2007": {
+   "EsSalud": 309,
+   "FF.AA. y Policía": 216,
+   "MINSA / Gob. regional": 7161,
+   "Otros": 14,
+   "Otros públicos": 67,
+   "Privado": 2730
+  },
+  "2008-2012": {
+   "EsSalud": 67,
+   "FF.AA. y Policía": 16,
+   "MINSA / Gob. regional": 680,
+   "Otros": 8,
+   "Otros públicos": 36,
+   "Privado": 4761
+  },
+  "2013-2017": {
+   "EsSalud": 4,
+   "FF.AA. y Policía": 7,
+   "MINSA / Gob. regional": 199,
+   "Otros": 32,
+   "Otros públicos": 20,
+   "Privado": 4441
+  }
+ },
+ "pct_privado_altas_2008_2017": 89.6,
+ "corr_eess10k_hosp100k": 0.15
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Dónde te atiendes? Oferta de salud en el Perú (IPRESS)</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#14212b;--ink2:#5b6b78;--acc:#0b7a75;--acc2:#e4572e;--line:#e1e6ea}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(135deg,#0d2b3a,#0b7a75);color:#fff;padding:28px 20px 22px}
+header .wrap,main{max-width:1280px;margin:0 auto}
+h1{margin:0 0 6px;font-size:clamp(1.4rem,3vw,2.1rem)}
+.q{font-size:1.05rem;opacity:.95;margin:0 0 10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:.82rem}
+.meta span{background:rgba(255,255,255,.15);padding:4px 10px;border-radius:99px}
+nav{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+nav .wrap{max-width:1280px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:0 12px}
+nav a{padding:12px 12px;color:var(--ink2);text-decoration:none;font-size:.9rem;white-space:nowrap}
+nav a:hover{color:var(--acc)}
+main{padding:16px 14px 40px}
+.filtros{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;align-items:end}
+label{font-size:.75rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
+select,input[type=search]{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:.92rem;background:#fff}
+.chk{display:flex;flex-wrap:wrap;gap:4px}
+.chk label{text-transform:none;letter-spacing:0;font-size:.82rem;color:var(--ink);background:#eef3f3;padding:4px 8px;border-radius:6px;margin:0;cursor:pointer}
+.rango{display:flex;gap:6px;align-items:center}.rango input{width:100%}
+button{padding:8px 12px;border:0;border-radius:8px;background:var(--acc);color:#fff;font-weight:600;cursor:pointer}
+button.sec{background:#e8eef0;color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi .v{font-size:1.75rem;font-weight:700;color:var(--acc)}
+.kpi .l{font-size:.82rem;color:var(--ink2)}
+.kpi .s{font-size:.75rem;color:var(--ink2);margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.card h3{margin:0 0 2px;font-size:1rem}.card p.sub{margin:0 0 6px;color:var(--ink2);font-size:.83rem}
+.plot{width:100%;height:440px}
+.full{grid-column:1/-1}
+section{margin-top:22px}
+h2{font-size:1.25rem;margin:0 0 10px}
+.hall{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.hall .card b.n{font-size:1.6rem;color:var(--acc2);display:block}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{background:#f0f4f5;position:sticky;top:0}
+.tabla{max-height:380px;overflow:auto}
+.nota{font-size:.82rem;color:var(--ink2)}
+footer{text-align:center;color:var(--ink2);font-size:.8rem;padding:20px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}.plot{height:380px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>¿Dónde te atiendes si te enfermas? La oferta de salud del Perú</h1>
+  <p class="q"><b>Pregunta:</b> ¿Cómo se distribuyen los establecimientos de salud (IPRESS) en el Perú y la cantidad de locales se traduce en capacidad resolutiva en cada departamento?</p>
+  <div class="meta"><span>📍 Perú · 25 departamentos</span><span>🗓️ Registro IPRESS, corte sept. 2017 · población Censo 2017</span><span>📊 Fuente: MINSA (datosabiertos.gob.pe) e INEI</span><span>✍️ Amanda Gomez</span></div>
+</div></header>
+<nav><div class="wrap">
+  <a href="#explorar">Explorar</a><a href="#mapas">Mapas</a><a href="#graficos">Gráficos</a><a href="#buscar">Buscar</a><a href="#hallazgos">Hallazgos</a><a href="#metodo">Metodología</a>
+</div></nav>
+<main>
+<p class="nota" style="margin:4px 0 12px">El Perú tiene más de veinte mil establecimientos de salud registrados, pero no todos tienen la misma capacidad: un puesto de salud I-1 suele atender con personal técnico o de enfermería, mientras que un hospital de III nivel tiene especialistas y alta complejidad. Este tablero cruza el registro del MINSA con la población censada para medir esas brechas.</p>
+
+<div class="filtros" id="explorar">
+  <div><label for="fDep">Departamento</label><select id="fDep"><option value="">Todo el Perú</option></select></div>
+  <div><label for="fNivel">Nivel de atención</label><select id="fNivel"><option value="">Todos los niveles</option></select></div>
+  <div style="grid-column:span 2"><label>Sector</label><div class="chk" id="fSector"></div></div>
+  <div><label>Año de inicio de actividad: <span id="lblAnio"></span></label><div class="rango"><input type="range" id="fDesde" min="1900" max="2017" value="1900"><input type="range" id="fHasta" min="1900" max="2017" value="2017"></div></div>
+  <div><label for="fInd">Indicador del mapa y ranking</label><select id="fInd">
+    <option value="eess10k">Establecimientos por 10 000 hab.</option>
+    <option value="n">Número de establecimientos</option>
+    <option value="hosp100k">Hospitales II–III nivel por 100 000 hab.</option>
+    <option value="pctPriv">% privados</option>
+    <option value="pctI1">% de públicos que son I-1</option>
+  </select></div>
+  <div style="display:flex;gap:6px"><button class="sec" id="btnReset">Restablecer</button><button id="btnCsv">⬇ CSV filtrado</button></div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<section id="mapas"><div class="grid">
+  <div class="card"><h3>Mapa coroplético por departamento</h3><p class="sub" id="subCoro"></p><div id="gCoro" class="plot"></div></div>
+  <div class="card"><h3>Ubicación de los establecimientos georreferenciados</h3><p class="sub">Solo el 38 % del registro trae coordenadas válidas. Clic en un punto para ver su ficha.</p><div id="gPuntos" class="plot"></div></div>
+</div></section>
+
+<section id="graficos"><div class="grid">
+  <div class="card"><h3>Ranking departamental</h3><p class="sub" id="subRank"></p><div id="gRank" class="plot" style="height:560px"></div></div>
+  <div class="card"><h3>Cantidad ≠ capacidad</h3><p class="sub">Cada punto es un departamento. Eje X: establecimientos por 10 000 hab.; eje Y: hospitales de II y III nivel por 100 000 hab.; tamaño: población.</p><div id="gDisp" class="plot" style="height:560px"></div></div>
+  <div class="card"><h3>Composición por nivel de atención y sector</h3><p class="sub">Establecimientos filtrados.</p><div id="gNivel" class="plot"></div></div>
+  <div class="card"><h3>Nuevos establecimientos por año de inicio</h3><p class="sub">Según la fecha de inicio de actividad declarada en el registro.</p><div id="gAnio" class="plot"></div></div>
+</div></section>
+
+<section id="buscar" class="card">
+  <h2>Buscar un establecimiento</h2>
+  <input type="search" id="fTexto" placeholder="Escribe un nombre, distrito o provincia (p. ej. «Loayza», «Iquitos»)…">
+  <p class="nota" id="nRes"></p>
+  <div class="tabla"><table><thead><tr><th>Nombre</th><th>Institución</th><th>Categoría</th><th>Departamento</th><th>Provincia</th><th>Distrito</th><th>Inicio</th></tr></thead><tbody id="tRes"></tbody></table></div>
+</section>
+
+<section id="hallazgos">
+  <h2>Tres hallazgos principales</h2>
+  <div class="hall">
+    <div class="card"><b class="n">34 de 55</b><h3>Lo complejo está en la capital</h3><p>Lima y Callao tienen el 35,7 % de la población y el 39,4 % de los establecimientos, pero concentran el 61,8 % de los hospitales de III nivel (34 de 55). 16 de los 25 departamentos no registran ningún establecimiento de III nivel.</p></div>
+    <div class="card"><b class="n">13,9 vs 7,1</b><h3>Más locales no es más capacidad</h3><p>Amazonas (13,9), Huancavelica (13,1) y Tacna (12,7) tienen la mayor densidad de establecimientos por 10 000 hab., casi el doble del promedio nacional (7,1). Pero en Amazonas el 72 % de los públicos son puestos I-1. La correlación entre densidad y hospitales por habitante es apenas 0,15.</p></div>
+    <div class="card"><b class="n">89,6 %</b><h3>El crecimiento reciente es privado</h3><p>De los establecimientos que iniciaron actividad entre 2008 y 2017, el 89,6 % son privados (sobre todo consultorios). Los públicos dominan en provincias: en Ayacucho, Pasco y Amazonas los privados son menos del 7 %, frente al 88 % en Lima.</p></div>
+  </div>
+</section>
+
+<section id="metodo" class="grid">
+  <div class="card"><h2>Metodología</h2>
+  <ol class="nota" style="font-size:.88rem">
+    <li><b>Datos:</b> registro «MINSA – IPRESS» (20 819 filas, 33 columnas) y población censada 2017 por departamento (INEI).</li>
+    <li><b>Limpieza:</b> se eliminaron 12 códigos únicos duplicados y 19 establecimientos inoperativos o en cierre; quedan <b>20 774</b> en funcionamiento. Se corrigió el rotulado invertido de coordenadas (NORTE = longitud, ESTE = latitud) y se descartaron puntos fuera del Perú.</li>
+    <li><b>Clasificación:</b> nivel de atención según la categoría (I-1 a I-4 = I nivel; II-1, II-2, II-E = II nivel; III-1, III-2, III-E = III nivel). Sector según institución (privado; MINSA/gobierno regional; EsSalud; FF.AA. y Policía; otros públicos).</li>
+    <li><b>Indicadores:</b> establecimientos por 10 000 hab.; hospitales II–III por 100 000 hab.; % privados; % de públicos de categoría I-1; año de inicio de actividad.</li>
+    <li>Todos los indicadores del tablero se recalculan en el navegador con los filtros elegidos.</li>
+  </ol></div>
+  <div class="card"><h2>Fuentes y limitaciones</h2>
+  <ul class="nota" style="font-size:.88rem">
+    <li><a href="https://www.datosabiertos.gob.pe/dataset/minsa-ipress" target="_blank">MINSA – IPRESS, Plataforma Nacional de Datos Abiertos</a> (archivo IPRESS.csv, corte sept. 2017).</li>
+    <li><a href="https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib1544/" target="_blank">INEI – Censos Nacionales 2017</a>, población censada (29 381 884).</li>
+    <li><a href="https://github.com/juaneladio/peru-geojson" target="_blank">Límites departamentales (peru-geojson, base INEI)</a>.</li>
+    <li><b>Limitaciones:</b> el registro es una foto de 2017; el número de locales no mide personal, camas ni horarios (el campo «camas» solo está lleno en 630 filas). El 28 % no tiene categoría (sobre todo consultorios privados y servicios de apoyo). El año de inicio es el declarado, no siempre la fecha real de apertura. Solo el 38 % tiene coordenadas, por lo que el mapa de puntos no es exhaustivo. Se usa la población 2017 como denominador.</li>
+  </ul></div>
+</section>
+</main>
+<footer>Amanda Gomez · Tarea 3, Python Intermedio · Código y datos: <a href="https://github.com/av-gomez/salud-peru-ipress">github.com/av-gomez/salud-peru-ipress</a></footer>
+
+<script>
+const fmt = (x, d=0) => (x==null||isNaN(x)) ? "–" : x.toLocaleString("es-PE",{minimumFractionDigits:d,maximumFractionDigits:d});
+const COL_NIVEL = {"I nivel":"#2a9d8f","II nivel":"#e9c46a","III nivel":"#e4572e","Sin categoría":"#9aa5ad"};
+const COL_SECTOR = {"Privado":"#7b61ff","MINSA / Gob. regional":"#0b7a75","EsSalud":"#2b8cbe","FF.AA. y Policía":"#8c6d31","Otros públicos":"#74a892","Otros":"#bbb"};
+const CFG = {responsive:true, displaylogo:false, modeBarButtonsToRemove:["lasso2d","select2d"]};
+let D, G, F = [];
+const $ = id => document.getElementById(id);
+
+Promise.all([fetch("data/ipress.json").then(r=>r.json()), fetch("data/peru.geojson").then(r=>r.json())]).then(([d,g])=>{
+  D = d; G = g;
+  const c = D.cods;
+  D.rows = D.filas.map(f=>({nombre:f[0],sector:c.sector[f[1]],nivel:c.nivel[f[2]],cat:c.categoria[f[3]],dep:c.departamento[f[4]],clas:c.clasificacion[f[5]],prov:f[6],dist:f[7],anio:f[8],lat:f[9],lon:f[10],intern:f[11],inst:f[12]}));
+  c.departamento.forEach(x=>$("fDep").add(new Option(x,x)));
+  ["I nivel","II nivel","III nivel","Sin categoría"].forEach(x=>$("fNivel").add(new Option(x,x)));
+  $("fSector").innerHTML = c.sector.map(s=>`<label><input type="checkbox" value="${s}" checked> ${s}</label>`).join("");
+  document.querySelectorAll("select,input").forEach(e=>e.addEventListener("input",()=> e.id==="fTexto" ? tabla() : actualizar()));
+  $("btnReset").onclick = ()=>{ $("fDep").value="";$("fNivel").value="";$("fInd").value="eess10k";$("fDesde").value=1900;$("fHasta").value=2017;$("fTexto").value="";document.querySelectorAll("#fSector input").forEach(i=>i.checked=true);actualizar(); };
+  $("btnCsv").onclick = descargar;
+  actualizar();
+});
+
+function filtrar(conDep=true){
+  const dep=$("fDep").value, niv=$("fNivel").value, a=+$("fDesde").value, b=+$("fHasta").value;
+  const sec=new Set([...document.querySelectorAll("#fSector input:checked")].map(i=>i.value));
+  const todosAnios = a===1900 && b===2017;
+  return D.rows.filter(r=>(!conDep||!dep||r.dep===dep)&&(!niv||r.nivel===niv)&&sec.has(r.sector)&&(todosAnios||(r.anio!=null&&r.anio>=a&&r.anio<=b)));
+}
+
+function porDep(rows){
+  const o={}; D.cods.departamento.forEach(d=>o[d]={n:0,priv:0,pub:0,i1:0,hosp:0,iii:0});
+  rows.forEach(r=>{const x=o[r.dep];x.n++; if(r.sector==="Privado")x.priv++; else {x.pub++; if(r.cat==="I-1")x.i1++;}
+    if(r.nivel==="II nivel"||r.nivel==="III nivel")x.hosp++; if(r.nivel==="III nivel")x.iii++;});
+  for(const d in o){const x=o[d],p=D.poblacion[d]; x.pob=p; x.eess10k=x.n/p*1e4; x.hosp100k=x.hosp/p*1e5; x.pctPriv=x.n?x.priv/x.n*100:null; x.pctI1=x.pub?x.i1/x.pub*100:null;}
+  return o;
+}
+const IND = {eess10k:["Establecimientos por 10 000 hab.",1],n:["Establecimientos",0],hosp100k:["Hospitales II–III por 100 000 hab.",2],pctPriv:["% privados",1],pctI1:["% de públicos que son I-1",1]};
+
+function actualizar(){
+  $("lblAnio").textContent = `${$("fDesde").value}–${$("fHasta").value}`;
+  if(+$("fDesde").value > +$("fHasta").value){ $("fHasta").value=$("fDesde").value; }
+  F = filtrar(); const todos = filtrar(false); const pd = porDep(todos);
+  const dep=$("fDep").value, ind=$("fInd").value, [nomInd,dec]=IND[ind];
+  // KPIs
+  const pob = dep ? D.poblacion[dep] : Object.values(D.poblacion).reduce((a,b)=>a+b,0);
+  const priv = F.filter(r=>r.sector==="Privado").length, pub=F.length-priv;
+  const hosp = F.filter(r=>r.nivel==="II nivel"||r.nivel==="III nivel").length, iii=F.filter(r=>r.nivel==="III nivel").length;
+  const i1 = F.filter(r=>r.sector!=="Privado"&&r.cat==="I-1").length;
+  const top = Object.entries(pd).filter(([,v])=>v[ind]!=null).sort((a,b)=>b[1][ind]-a[1][ind])[0];
+  const ambito = dep || "Perú";
+  $("kpis").innerHTML = [
+    [fmt(F.length),"Establecimientos en funcionamiento",`${ambito} · con los filtros actuales`],
+    [fmt(F.length/pob*1e4,1),"Establecimientos por 10 000 hab.",`Población censada 2017: ${fmt(pob)}`],
+    [fmt(F.length?priv/F.length*100:null,1)+" %","Son privados",`${fmt(pub)} públicos`],
+    [fmt(hosp),"Hospitales de II y III nivel",`${fmt(iii)} de III nivel · ${fmt(hosp/pob*1e5,2)} por 100 000 hab.`],
+    [fmt(pub?i1/pub*100:null,1)+" %","De los públicos son puestos I-1","Categoría más básica de atención"],
+    [top?top[0]:"–","Departamento con mayor valor",top?`${nomInd}: ${fmt(top[1][ind],dec)}`:""]
+  ].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div><div class="s">${k[2]}</div></div>`).join("");
+
+  // Coroplético
+  const deps = D.cods.departamento;
+  $("subCoro").textContent = `${nomInd}. Clic en un departamento para filtrarlo.`;
+  Plotly.react("gCoro",[{type:"choropleth",geojson:G,featureidkey:"properties.NOMBDEP",locations:deps,z:deps.map(d=>pd[d][ind]),
+    colorscale:[[0,"#e6f4f1"],[.5,"#4fb3a9"],[1,"#0d3b4a"]],marker:{line:{width:deps.map(d=>d===dep?3:.6),color:deps.map(d=>d===dep?"#e4572e":"#fff")}},
+    text:deps.map(d=>`<b>${d}</b><br>${nomInd}: ${fmt(pd[d][ind],dec)}<br>Establecimientos: ${fmt(pd[d].n)}<br>Hospitales II–III: ${pd[d].hosp}`),hoverinfo:"text",colorbar:{thickness:12,len:.7}}],
+    {geo:{fitbounds:"geojson",visible:false,projection:{type:"mercator"}},margin:{l:0,r:0,t:0,b:0}},CFG);
+  const gc=$("gCoro"); gc.removeAllListeners&&gc.removeAllListeners("plotly_click");
+  gc.on("plotly_click",e=>{const d=e.points[0].location;$("fDep").value=($("fDep").value===d?"":d);actualizar();});
+
+  // Puntos
+  const pts = F.filter(r=>r.lat!=null);
+  const niveles = ["Sin categoría","I nivel","II nivel","III nivel"];
+  Plotly.react("gPuntos",niveles.map(nv=>{const p=pts.filter(r=>r.nivel===nv);return {type:"scattergeo",name:nv,lat:p.map(r=>r.lat),lon:p.map(r=>r.lon),mode:"markers",
+    marker:{size:nv==="III nivel"?11:nv==="II nivel"?8:5,color:COL_NIVEL[nv],opacity:.8},text:p.map(r=>`<b>${r.nombre}</b><br>${r.inst} · ${r.cat}<br>${r.dist}, ${r.prov} (${r.dep})`),hoverinfo:"text"}}),
+    {geo:{fitbounds:"locations",projection:{type:"mercator"},showcountries:true,countrycolor:"#9aa5ad",showland:true,landcolor:"#f3f1ec",showocean:true,oceancolor:"#e3eef5",showlakes:false,resolution:50,showsubunits:true},
+     margin:{l:0,r:0,t:0,b:0},legend:{orientation:"h",y:0,x:0,bgcolor:"rgba(255,255,255,.8)"}},CFG);
+
+  // Ranking
+  const orden = deps.filter(d=>pd[d][ind]!=null).sort((a,b)=>pd[a][ind]-pd[b][ind]);
+  $("subRank").textContent = `${nomInd} (respeta filtros de nivel, sector y año).`;
+  const nac = ind==="n"?null:(ind==="eess10k"?todos.length/Object.values(D.poblacion).reduce((a,b)=>a+b,0)*1e4:null);
+  Plotly.react("gRank",[{type:"bar",orientation:"h",y:orden,x:orden.map(d=>pd[d][ind]),marker:{color:orden.map(d=>d===dep?"#e4572e":(d==="LIMA"||d==="CALLAO")?"#0d3b4a":"#4fb3a9")},
+    text:orden.map(d=>fmt(pd[d][ind],dec)),textposition:"outside",hovertemplate:"%{y}: %{x:.2f}<extra></extra>"}],
+    {margin:{l:110,r:50,t:10,b:30},xaxis:{title:nomInd},shapes:nac?[{type:"line",x0:nac,x1:nac,y0:-.5,y1:orden.length-.5,line:{dash:"dot",color:"#e4572e"}}]:[],
+     annotations:nac?[{x:nac,y:orden.length-.5,text:`Perú: ${fmt(nac,1)}`,showarrow:false,yanchor:"bottom",font:{color:"#e4572e",size:11}}]:[]},CFG);
+
+  // Dispersión
+  Plotly.react("gDisp",[{type:"scatter",mode:"markers+text",x:deps.map(d=>pd[d].eess10k),y:deps.map(d=>pd[d].hosp100k),text:deps.map(d=>d.length>9?d.slice(0,8)+".":d),textposition:"top center",textfont:{size:9},
+    marker:{size:deps.map(d=>Math.sqrt(D.poblacion[d])/40+6),color:deps.map(d=>d===dep?"#e4572e":pd[d].pctPriv),colorscale:"Viridis",showscale:!dep,colorbar:{title:"% priv.",thickness:10},line:{color:"#fff",width:1}},
+    customdata:deps.map(d=>[d,pd[d].n,pd[d].hosp]),hovertemplate:"<b>%{customdata[0]}</b><br>%{x:.1f} por 10 000 hab.<br>%{y:.2f} hospitales por 100 000<br>Total: %{customdata[1]} · Hosp.: %{customdata[2]}<extra></extra>"}],
+    {margin:{l:50,r:10,t:10,b:45},xaxis:{title:"Establecimientos por 10 000 hab."},yaxis:{title:"Hospitales II–III por 100 000 hab."}},CFG);
+
+  // Nivel x sector
+  const secs = D.cods.sector;
+  Plotly.react("gNivel",secs.map(s=>({type:"bar",name:s,x:niveles,y:niveles.map(nv=>F.filter(r=>r.sector===s&&r.nivel===nv).length),marker:{color:COL_SECTOR[s]}})),
+    {barmode:"stack",margin:{l:50,r:10,t:10,b:40},yaxis:{title:"Establecimientos"},legend:{orientation:"h",y:-.15}},CFG);
+
+  // Años
+  const anios=[];for(let a=1990;a<=2017;a++)anios.push(a);
+  Plotly.react("gAnio",["Privado","MINSA / Gob. regional","EsSalud"].map(s=>({type:"scatter",mode:"lines+markers",name:s,x:anios,y:anios.map(a=>F.filter(r=>r.sector===s&&r.anio===a).length),line:{color:COL_SECTOR[s],width:2.5},marker:{size:4}})),
+    {margin:{l:50,r:10,t:10,b:40},yaxis:{title:"Establecimientos que iniciaron"},xaxis:{title:"Año (1990–2017)"},legend:{orientation:"h",y:1.1}},CFG);
+  tabla();
+}
+
+function tabla(){
+  const q = $("fTexto").value.trim().toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  const base = q ? F.filter(r=>(r.nombre+" "+r.dist+" "+r.prov).toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"").includes(q)) : F;
+  $("nRes").textContent = `${fmt(base.length)} establecimientos coinciden${base.length>200?" (se muestran 200)":""}. La búsqueda respeta los filtros de arriba.`;
+  $("tRes").innerHTML = base.slice(0,200).map(r=>`<tr><td>${r.nombre}</td><td>${r.inst}</td><td>${r.cat}</td><td>${r.dep}</td><td>${r.prov}</td><td>${r.dist}</td><td>${r.anio??"–"}</td></tr>`).join("");
+}
+
+function descargar(){
+  const cab=["nombre","institucion","sector","categoria","nivel","departamento","provincia","distrito","anio_inicio","lat","lon"];
+  const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv=[cab.join(",")].concat(F.map(r=>[r.nombre,r.inst,r.sector,r.cat,r.nivel,r.dep,r.prov,r.dist,r.anio,r.lat,r.lon].map(esc).join(","))).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv"}));a.download="ipress_filtrado.csv";a.click();
+}
+</script>
+</body>
+</html>
