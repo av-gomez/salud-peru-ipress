@@ -22,7 +22,7 @@
 Se limpió el registro de 20 819 establecimientos del MINSA, se clasificó cada uno por nivel de atención y sector, y se cruzó con la población censada para construir indicadores por departamento. Los resultados se presentan en:
 
 - un **dashboard interactivo** (HTML + Plotly.js, GitHub Pages) con 6 KPIs, 6 visualizaciones (2 mapas), 6 controles, buscador y descarga del CSV filtrado;
-- un **reel vertical de ~55 s** narrado con mi voz clonada con IA (Qwen3-TTS), con mapas, gráficos, capturas del dashboard, música y subtítulos.
+- un **reel vertical de 54 s** narrado con mi voz clonada con IA (Qwen3-TTS), con mapas, gráficos, capturas del dashboard, música y subtítulos.
 
 ![Dashboard: KPIs y mapas](reel/recursos/dash_top.png)
 
