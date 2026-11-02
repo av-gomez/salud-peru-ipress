@@ -6,7 +6,7 @@
 |---|---|
 | 🌐 **Dashboard público** | https://av-gomez.github.io/salud-peru-ipress/web/ |
 | 🎬 **Reel** | [`reel/salidas/reel.mp4`](reel/salidas/reel.mp4) |
-| 💼 **LinkedIn** | _(enlace a la publicación: completar al publicar)_ |
+| 💼 **LinkedIn** | https://lnkd.in/p/d-AdiBHQ |
 | 📦 **Repositorio** | https://github.com/av-gomez/salud-peru-ipress |
 
 ## 1. Tema y pregunta de investigación
@@ -63,7 +63,7 @@ Se limpió el registro de 20 819 establecimientos del MINSA, se clasificó cada 
 ## 6. Enlaces
 
 - Dashboard: https://av-gomez.github.io/salud-peru-ipress/web/
-- LinkedIn: _(completar con el enlace de la publicación)_
+- LinkedIn: https://lnkd.in/p/d-AdiBHQ
 
 ## 7. Reproducir
 
