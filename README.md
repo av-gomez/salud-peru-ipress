@@ -6,7 +6,7 @@
 |---|---|
 | 🌐 **Dashboard público** | https://av-gomez.github.io/salud-peru-ipress/web/ |
 | 🎬 **Reel (54 s, 9:16)** | [`reel/reel.mp4`](reel/reel.mp4) · subtítulos [`reel/subtitulos.srt`](reel/subtitulos.srt) |
-| 💼 **LinkedIn** | https://lnkd.in/p/d-AdiBHQ |
+| 💼 **LinkedIn** | https://lnkd.in/p/du6VJm3q |
 | 📦 **Repositorio** | https://github.com/av-gomez/salud-peru-ipress |
 
 ![Dashboard: indicadores y mapas](reel/recursos/dash_top.png)
@@ -78,7 +78,7 @@ El dashboard recalcula los KPIs, los mapas y los gráficos en el navegador a par
 ## 6. Enlaces
 
 - Dashboard: https://av-gomez.github.io/salud-peru-ipress/web/
-- Publicación de LinkedIn: https://lnkd.in/p/d-AdiBHQ
+- Publicación de LinkedIn: https://lnkd.in/p/du6VJm3q
 - Reel: [`reel/reel.mp4`](reel/reel.mp4)
 
 ## 7. Reproducir

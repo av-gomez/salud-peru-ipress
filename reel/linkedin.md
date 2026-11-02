@@ -1,23 +1,32 @@
 # Publicación de LinkedIn
 
-Adjuntar: `reel/salidas/reel.mp4` + `reel/recursos/dash_top.png` + `reel/recursos/dash_graficos.png`
+Publicada: https://lnkd.in/p/du6VJm3q
+
+Adjuntos: `reel/reel.mp4` (+ capturas `reel/recursos/dash_top.png` y `reel/recursos/dash_graficos.png`)
 
 ---
 
-🏥 ¿Dónde te atiendes si te enfermas en el Perú?
+¿Dónde te atiendes si te enfermas en el Perú?
 
-Analicé los 20 774 establecimientos de salud en funcionamiento del registro IPRESS del MINSA (corte 2017) y los crucé con la población del Censo 2017 (INEI) para medir las brechas territoriales.
+Analicé los 20 774 establecimientos de salud en funcionamiento del registro IPRESS del MINSA y los crucé con la población del Censo 2017 (INEI). La pregunta: ¿tener más locales de salud significa tener más capacidad de atención?
 
-📌 Hallazgos:
-1️⃣ Lima y Callao tienen el 36 % de la población, pero concentran 34 de los 55 hospitales de III nivel. 16 de 25 departamentos no registran ninguno.
-2️⃣ Más locales no es más capacidad: Amazonas tiene 13,9 establecimientos por 10 000 habitantes (el doble del promedio nacional), pero el 72 % de sus establecimientos públicos son puestos básicos I-1.
-3️⃣ Casi 9 de cada 10 establecimientos que iniciaron actividad entre 2008 y 2017 son privados.
+Lo que encontré:
 
-⚠️ El registro es una foto de 2017 y contar locales no mide personal ni equipamiento: los detalles y limitaciones están en el dashboard.
+1. La alta complejidad se concentra en la capital. Lima y Callao tienen el 36 % de la población, pero 34 de los 55 hospitales de III nivel del país. 16 de los 25 departamentos no registran ninguno.
 
-📊 Dashboard interactivo (mapas, filtros por departamento, nivel, sector y año, buscador): https://av-gomez.github.io/salud-peru-ipress/web/
-💻 Código y datos: https://github.com/av-gomez/salud-peru-ipress
+2. Más locales no es más capacidad. Amazonas tiene 13,9 establecimientos por cada 10 000 habitantes, casi el doble del promedio nacional (7,1). Pero 7 de cada 10 de sus establecimientos públicos son puestos de salud básicos (categoría I-1).
 
-🎙️ La narración del reel fue generada con IA (Qwen3-TTS) a partir de mi propia voz. Fuentes: MINSA (datosabiertos.gob.pe) e INEI.
+3. El crecimiento reciente fue privado. Casi 9 de cada 10 establecimientos que iniciaron actividad entre 2008 y 2017 son privados, sobre todo consultorios.
 
-#CienciaDeDatos #Python #SaludPública #Perú #DatosAbiertos #VisualizaciónDeDatos
+Limitaciones: el registro corresponde a 2017 y contar locales no mide personal, camas ni equipamiento. Los detalles están en el dashboard.
+
+Dashboard interactivo (mapas, ranking y filtros por departamento, nivel de atención, sector y año):
+https://av-gomez.github.io/salud-peru-ipress/web/
+
+Código, datos y metodología:
+https://github.com/av-gomez/salud-peru-ipress
+
+La narración del reel fue generada con IA (Qwen3-TTS) a partir de mi propia voz. Mapas y gráficos de elaboración propia; música original.
+Fuentes: MINSA – Registro IPRESS (datosabiertos.gob.pe) e INEI – Censos Nacionales 2017.
+
+#CienciaDeDatos #Python #SaludPública #Perú #DatosAbiertos #VisualizaciónDeDatos #IA
