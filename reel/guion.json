@@ -20,19 +20,19 @@
       "visual": "mapa_iii"
     },
     {
-      "frase": "Amazonas tiene casi catorce establecimientos por cada diez mil habitantes, el doble del promedio nacional. Pero siete de cada diez de sus centros públicos son puestos de salud básicos.",
+      "frase": "Amazonas tiene el doble de establecimientos por habitante que el promedio. Pero siete de cada diez de sus centros públicos son puestos básicos.",
       "cifra": "72 %",
       "etiqueta": "Amazonas: públicos de categoría I-1",
       "visual": "densidad"
     },
     {
-      "frase": "Y entre dos mil ocho y dos mil diecisiete, casi nueve de cada diez nuevos establecimientos fueron privados.",
+      "frase": "Y casi nueve de cada diez establecimientos nuevos entre dos mil ocho y dos mil diecisiete fueron privados.",
       "cifra": "9 de 10",
       "etiqueta": "Altas 2008–2017 que son privadas",
       "visual": "altas"
     },
     {
-      "frase": "Más locales no significa más capacidad. Explora el mapa y filtra por región y nivel en el dashboard.",
+      "frase": "Más locales no significa más capacidad. Explora los datos en el dashboard.",
       "cifra": "Dashboard",
       "etiqueta": "Link en el post · MINSA e INEI",
       "visual": "dashboard"

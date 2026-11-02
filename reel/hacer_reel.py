@@ -109,9 +109,10 @@ def narrar(guion, args, whisper):
             print(f"  escena {i}: desde caché")
             continue
         mejor = None
-        for intento in range(1, 4):
+        for intento in range(1, 3):
             t1 = time.time()
-            wavs, sr = tts.generate_voice_clone(text=texto, language="Spanish", voice_clone_prompt=prompt)
+            wavs, sr = tts.generate_voice_clone(text=texto, language="Spanish", voice_clone_prompt=prompt,
+                                                 max_new_tokens=int(12 * (len(texto.split()) * 0.5 + 2)))
             audio = np.asarray(wavs[0], dtype=np.float32)
             ruta = AQUI / "salidas" / f"escena_{i}.wav"
             sf.write(ruta, audio, sr)
