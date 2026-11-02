@@ -1,11 +1,12 @@
-"""Limpieza, indicadores y exportación para el dashboard.
+"""Paso 2: limpieza, variables derivadas, indicadores por departamento y datos para la web.
 
 Entrada  (datos/originales/):
   IPRESS.csv                 MINSA - Registro de IPRESS (datosabiertos.gob.pe, corte sept. 2017)
   poblacion_inei_2017.csv    INEI - Censos Nacionales 2017, población censada por departamento
   peru_departamental.geojson Límites departamentales (juaneladio/peru-geojson, base INEI)
 Salida (datos/procesados/ y web/data/):
-  ipress_limpio.csv, departamentos.csv, web/data/ipress.json, web/data/resumen.json, web/data/peru.geojson
+  ipress_limpio.csv, departamentos.csv, limpieza.json, web/data/ipress.json, web/data/peru.geojson
+Luego: python scripts/analizar_datos.py (hallazgos -> web/data/resumen.json)
 
 Uso:  python scripts/procesar_datos.py
 """
@@ -115,41 +116,10 @@ dep["hab_por_eess"] = dep["poblacion_2017"] / dep["eess"]
 dep = dep.round(2).sort_values("eess", ascending=False)
 dep.to_csv(PROC / "departamentos.csv", index=False, encoding="utf-8")
 
-# ---------- 3. hallazgos (cifras que usan el dashboard, README y reel) ----------
-pais_pob = int(pob["poblacion_2017"].sum())
-lima = dep.set_index("departamento").loc[["LIMA", "CALLAO"]].sum()
-tot = len(d)
-hosp = d[d["nivel"].isin(["II nivel", "III nivel"])]
-iii = d[d["nivel"] == "III nivel"]
-cat_publico = d[d["sector"] != "Privado"]
-resumen = {
-    "corte": "septiembre 2017",
-    "n_bruto": n_bruto, "n_duplicados": n_dup, "n_no_funcionan": n_inop, "n_final": tot,
-    "n_con_coord": int(d["con_coord"].sum()),
-    "poblacion_2017": pais_pob,
-    "eess_10k_pais": round(tot / pais_pob * 1e4, 2),
-    "pct_privado_pais": round((d["sector"] == "Privado").mean() * 100, 1),
-    "lima_callao_pct_eess": round(lima["eess"] / tot * 100, 1),
-    "lima_callao_pct_pob": round(lima["poblacion_2017"] / pais_pob * 100, 1),
-    "lima_callao_pct_privados": round(lima["privados"] / (d["sector"] == "Privado").sum() * 100, 1),
-    "lima_callao_pct_III": round(iii["departamento"].isin(["LIMA", "CALLAO"]).mean() * 100, 1),
-    "n_III": len(iii), "n_II_III": len(hosp),
-    "pct_publicos_I1": round((cat_publico["categoria"] == "I-1").mean() * 100, 1),
-    "pct_publicos_I": round((cat_publico["nivel"] == "I nivel").mean() * 100, 1),
-    "deps_sin_III": sorted(set(dep["departamento"]) - set(iii["departamento"])),
-    "top_eess_10k": dep.nlargest(3, "eess_10k")[["departamento", "eess_10k", "pct_I1_publicos"]].to_dict("records"),
-    "bottom_eess_10k": dep.nsmallest(3, "eess_10k")[["departamento", "eess_10k"]].to_dict("records"),
-    "top_hosp_100k": dep.nlargest(3, "hosp_100k")[["departamento", "hosp_100k"]].to_dict("records"),
-    "bottom_hosp_100k": dep.nsmallest(3, "hosp_100k")[["departamento", "hosp_100k"]].to_dict("records"),
-    "altas_por_periodo": d.assign(p=pd.cut(d["anio_inicio"], [1899, 2007, 2012, 2017],
-                                           labels=["hasta 2007", "2008-2012", "2013-2017"]))
-                          .groupby(["p", "sector"], observed=True).size().unstack(fill_value=0).to_dict("index"),
-}
-pp = d[d["anio_inicio"].between(2008, 2017)]
-resumen["pct_privado_altas_2008_2017"] = round((pp["sector"] == "Privado").mean() * 100, 1)
-resumen["corr_eess10k_hosp100k"] = round(dep["eess_10k"].corr(dep["hosp_100k"]), 2)
-(WEB / "resumen.json").write_text(json.dumps(resumen, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
-print(json.dumps(resumen, ensure_ascii=False, indent=1, default=str))
+# ---------- 3. registro de la limpieza (lo usa analizar_datos.py) ----------
+(PROC / "limpieza.json").write_text(json.dumps({"n_bruto": n_bruto, "n_duplicados": n_dup, "n_no_funcionan": n_inop,
+                                                "n_final": len(d)}, indent=1), encoding="utf-8")
+print(f"Limpieza: {n_bruto} filas -> {len(d)} establecimientos ({n_dup} duplicados, {n_inop} no funcionan)")
 
 # ---------- 4. datos compactos para la web ----------
 cods = {k: sorted(d[k].dropna().unique().tolist()) for k in ["sector", "nivel", "categoria", "departamento", "clasificacion"]}
@@ -168,4 +138,4 @@ for r in d.itertuples(index=False):
     "filas": filas, "poblacion": dict(zip(pob["departamento"], pob["poblacion_2017"]))}, ensure_ascii=False,
     separators=(",", ":")), encoding="utf-8")
 shutil.copy(ORIG / "peru_departamental.geojson", WEB / "peru.geojson")
-print("ok:", tot, "establecimientos")
+print("ok:", len(d), "establecimientos")

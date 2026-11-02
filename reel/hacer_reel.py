@@ -27,7 +27,8 @@ TINTA = (243, 237, 231)
 TINTA_2 = (168, 159, 151)
 ACENTO = (242, 107, 29)
 PAUSA = 0.35        # segundos de silencio entre escenas
-CIERRE = 2.0        # segundos de la tarjeta final
+CIERRE = 4.0        # segundos de la tarjeta final (créditos)
+FUNDIDO = 0.3       # segundos de fundido entre escenas
 MAX_WER = 0.25      # si Whisper entiende mal más del 25 %, se regenera la escena
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
@@ -60,8 +61,8 @@ def frase_hablada(frase):
     return re.sub(r"\d[\d .,]*\d|\d", cambiar, frase)
 
 
-def a_wav(origen, destino, segundos=20):
-    subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(origen), "-t", str(segundos),
+def a_wav(origen, destino, inicio=0.0, fin=20.0):
+    subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-ss", str(inicio), "-to", str(fin), "-i", str(origen),
                     "-ac", "1", "-ar", "24000", str(destino)], check=True)
 
 
@@ -80,7 +81,7 @@ def narrar(guion, args, whisper):
 
     torch.set_num_threads(max(1, (torch.get_num_threads())))
     ref = AQUI / "salidas" / "voz_ref.wav"
-    a_wav(args.voz, ref)
+    a_wav(args.voz, ref, args.voz_inicio, args.voz_fin)
     if args.texto_voz:
         ref_texto = args.texto_voz
     else:
@@ -164,46 +165,77 @@ def bloques(palabras, max_pal=5):
 # ---------- video ----------
 
 class Lienzo:
+    """Compone cada cuadro: barra de progreso, aviso de IA, visual animado, cifra, etiqueta y subtítulo."""
+    ANIM_FPS = 12      # velocidad de las animaciones (cuadros de visuales/<clave>/ por segundo)
+    Y_VIS = 290        # borde superior del visual (1080x920)
+
     def __init__(self, guion, args):
         self.args = args
+        self.n = len(guion["escenas"])
         self.f_cifra = fuente(True, 150)
         self.f_etiq = fuente(False, 46)
         self.f_sub = fuente(True, 58)
-        self.f_peq = fuente(False, 30)
+        self.f_peq = fuente(False, 28)
         self.f_peq_b = fuente(True, 30)
         self.f_tit = fuente(True, 64)
+        self.f_med = fuente(True, 44)
         self.visuales = {}
         for esc in guion["escenas"]:
             clave = esc["visual"]
-            if clave not in self.visuales:
-                self.visuales[clave] = Image.open(AQUI / "visuales" / f"{clave}.png").convert("RGB")
+            if clave in self.visuales:
+                continue
+            carpeta = AQUI / "visuales" / clave
+            if carpeta.is_dir():                       # animación: lista de cuadros
+                self.visuales[clave] = [Image.open(f).convert("RGB") for f in sorted(carpeta.glob("*.png"))]
+            elif (AQUI / "visuales" / f"{clave}_scroll.png").exists():   # imagen alta que se desplaza
+                self.visuales[clave] = ("scroll", Image.open(AQUI / "visuales" / f"{clave}_scroll.png").convert("RGB"))
+            else:
+                self.visuales[clave] = [Image.open(AQUI / "visuales" / f"{clave}.png").convert("RGB")]
 
-    def base(self):
+    def base(self, k=None, avance=0.0):
         img = Image.new("RGB", (ANCHO, ALTO), FONDO)
         d = ImageDraw.Draw(img)
-        # aviso de IA, visible todo el video (fuera de la zona de botones de arriba)
-        d.rounded_rectangle((60, 220, 470, 272), radius=26, fill=(52, 45, 40))
-        d.text((84, 230), "Voz generada con IA", font=self.f_peq_b, fill=TINTA)
-        d.text((60, 1660), f"{self.args.autor} · Fuente: {self.args.fuente}", font=self.f_peq, fill=TINTA_2)
+        # barra de progreso por escenas
+        if k is not None:
+            ancho = (ANCHO - 120 - 12 * (self.n - 1)) / self.n
+            for j in range(self.n):
+                x0 = 60 + j * (ancho + 12)
+                d.rounded_rectangle((x0, 168, x0 + ancho, 176), radius=4, fill=(60, 52, 46))
+                lleno = 1 if j < k else (avance if j == k else 0)
+                if lleno > 0.02:
+                    d.rounded_rectangle((x0, 168, x0 + ancho * lleno, 176), radius=4, fill=ACENTO)
+        # aviso de IA, visible todo el video
+        d.rounded_rectangle((60, 200, 470, 252), radius=26, fill=(52, 45, 40))
+        d.ellipse((80, 216, 100, 236), fill=ACENTO)
+        d.text((112, 209), "Voz generada con IA", font=self.f_peq_b, fill=TINTA)
+        d.text((60, 1665), f"Fuente: {self.args.fuente}", font=self.f_peq, fill=TINTA_2)
+        d.text((60, 1705), f"Elaboración: {self.args.autor}", font=self.f_peq, fill=TINTA_2)
         return img, d
 
-    def cuadro(self, t, escena, t_esc, palabras_vis):
-        img, d = self.base()
-        # fondo de la escena con un acercamiento lento
-        vis = self.visuales[escena["visual"]]
-        z = 1 + 0.04 * min(t_esc / 6, 1)
-        w, h = int(vis.width * z), int(vis.height * z)
-        vz = vis.resize((w, h), Image.BILINEAR).crop(((w - 1080) // 2, (h - 920) // 2, (w - 1080) // 2 + 1080, (h - 920) // 2 + 920))
-        img.paste(vz, (0, 300))
+    def visual(self, clave, t_esc, dur):
+        v = self.visuales[clave]
+        if isinstance(v, tuple):                      # desplazamiento vertical suave
+            alto = v[1]
+            u = min(max((t_esc - 0.6) / max(dur - 1.4, 0.1), 0), 1)
+            u = u * u * (3 - 2 * u)
+            y = int((alto.height - 920) * u)
+            return alto.crop((0, y, 1080, y + 920))
+        cuadro = v[min(int(t_esc * self.ANIM_FPS), len(v) - 1)]
+        z = 1 + 0.03 * min(t_esc / max(dur, 1), 1)    # acercamiento lento
+        w, h = int(1080 * z), int(920 * z)
+        return cuadro.resize((w, h), Image.BILINEAR).crop(((w - 1080) // 2, (h - 920) // 2, (w - 1080) // 2 + 1080, (h - 920) // 2 + 920))
+
+    def cuadro(self, t, escena, t_esc, palabras_vis, k=0, dur=5.0):
+        img, d = self.base(k, min(t_esc / dur, 1))
+        img.paste(self.visual(escena["visual"], t_esc, dur), (0, self.Y_VIS))
         # cifra que cuenta hacia arriba en el primer 0,6 s
         cifra = escena["cifra"].replace("¡¡", "")
-        avance = min(t_esc / 0.6, 1)
-        d.text((60, 1225), contar(cifra, avance), font=self.f_cifra, fill=TINTA)
-        d.text((64, 1400), escena["etiqueta"], font=self.f_etiq, fill=TINTA_2)
+        d.text((60, 1225), contar(cifra, min(t_esc / 0.6, 1)), font=self.f_cifra, fill=TINTA)
+        d.text((64, 1395), escena["etiqueta"], font=self.f_etiq, fill=TINTA_2)
         # subtítulo: el bloque que suena, con la palabra actual en naranja
         bloque = next((b for b in palabras_vis if b[0][1] - 0.05 <= t <= b[-1][2] + 0.25), None)
         if bloque:
-            x, y = 60, 1500
+            x, y = 60, 1480
             for p, a, b in bloque:
                 ancho = d.textlength(p + " ", font=self.f_sub)
                 if x + ancho > 940:   # margen derecho libre para los botones de la app
@@ -213,15 +245,29 @@ class Lienzo:
         return img
 
     def final(self, guion):
-        img, d = self.base()
-        envolver_titulo(img, d, guion.get("titulo", ""), self.f_tit, y=640)
-        d.text((60, 1000), self.args.autor, font=self.f_etiq, fill=TINTA)
-        d.text((60, 1070), self.args.repo, font=self.f_peq, fill=TINTA_2)
+        img, d = self.base(self.n, 1)
+        d.text((60, 330), "Explora los datos", font=self.f_med, fill=TINTA_2)
+        envolver_titulo(img, d, guion.get("titulo", ""), self.f_tit, y=400)
+        d.rounded_rectangle((60, 760, 1020, 900), radius=24, fill=(52, 45, 40))
+        d.text((90, 778), "Dashboard interactivo", font=self.f_peq, fill=TINTA_2)
+        d.text((90, 818), self.args.dashboard, font=self.f_med, fill=ACENTO)
+        d.text((60, 960), "Créditos", font=self.f_med, fill=TINTA)
+        creditos = [
+            "Datos: MINSA – Registro IPRESS (datosabiertos.gob.pe)",
+            "            e INEI – Censos Nacionales 2017",
+            "Voz: generada con IA (Qwen3-TTS) a partir de",
+            "            la voz de la autora",
+            "Subtítulos: faster-whisper · Música: original (código)",
+            "Mapas y gráficos: elaboración propia",
+            f"Código: {self.args.repo}",
+        ]
+        for j, c in enumerate(creditos):
+            d.text((60, 1030 + j * 50), c, font=self.f_peq, fill=TINTA_2)
         return img
 
     def portada(self, guion):
         img, d = self.base()
-        img.paste(self.visuales[guion["escenas"][0]["visual"]], (0, 300))
+        img.paste(self.visual(guion["escenas"][0]["visual"], 99, 1), (0, self.Y_VIS))
         envolver_titulo(img, d, guion.get("titulo", ""), self.f_tit, y=1240)
         return img
 
@@ -270,10 +316,13 @@ def srt_tiempo(s):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--voz", required=True)
+    ap.add_argument("--voz-inicio", type=float, default=0.0, help="segundo donde empieza el tramo limpio de la grabación")
+    ap.add_argument("--voz-fin", type=float, default=20.0, help="segundo donde termina (al cierre de una frase)")
     ap.add_argument("--texto-voz", help="lo que dices en la grabación (si no, lo transcribe Whisper)")
     ap.add_argument("--autor", required=True)
     ap.add_argument("--fuente", required=True)
     ap.add_argument("--repo", default="github.com/av-gomez/salud-peru-ipress")
+    ap.add_argument("--dashboard", default="av-gomez.github.io/salud-peru-ipress")
     ap.add_argument("--guion", default=str(AQUI / "guion.json"))
     ap.add_argument("--tts", default="Qwen/Qwen3-TTS-12Hz-0.6B-Base")
     ap.add_argument("--device", default="cpu")
@@ -326,8 +375,23 @@ def main():
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for n in range(int(total * FPS)):
         tt = n / FPS
-        tramo = next((x for x in linea if x["inicio"] <= tt < x["fin"]), None)
-        img = lienzo.cuadro(tt, tramo["escena"], tt - tramo["inicio"], tramo["bloques"]) if tramo else final
+        k = next((j for j, x in enumerate(linea) if x["inicio"] <= tt < x["fin"]), None)
+        if k is None:
+            # tarjeta final con fundido desde la última escena
+            u = min((tt - linea[-1]["fin"]) / FUNDIDO, 1)
+            x = linea[-1]
+            if u < 1:
+                ult = lienzo.cuadro(tt, x["escena"], tt - x["inicio"], [], len(linea) - 1, x["fin"] - x["inicio"])
+                img = Image.blend(ult, final, u)
+            else:
+                img = final
+        else:
+            x = linea[k]
+            img = lienzo.cuadro(tt, x["escena"], tt - x["inicio"], x["bloques"], k, x["fin"] - x["inicio"])
+            if k > 0 and tt - x["inicio"] < FUNDIDO:   # fundido cruzado entre escenas
+                p = linea[k - 1]
+                prev = lienzo.cuadro(tt, p["escena"], tt - p["inicio"], [], k - 1, p["fin"] - p["inicio"])
+                img = Image.blend(prev, img, (tt - x["inicio"]) / FUNDIDO)
         proc.stdin.write(img.tobytes())
     proc.stdin.close()
     proc.wait()

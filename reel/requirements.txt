@@ -1,0 +1,8 @@
+qwen-tts
+faster-whisper
+pillow
+imageio-ffmpeg
+soundfile
+jiwer
+num2words
+numpy

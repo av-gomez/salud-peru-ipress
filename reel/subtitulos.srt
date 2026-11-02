@@ -1,112 +1,112 @@
 1
-00:00:00,000 --> 00:00:01,605
+00:00:00,000 --> 00:00:01,409
 ¿Dónde te atiendes si te
 
 2
-00:00:01,605 --> 00:00:02,954
+00:00:01,409 --> 00:00:02,593
 enfermas en el Perú?
 
 3
-00:00:02,954 --> 00:00:05,651
-Analizamos veinte mil setecientos setenta
+00:00:02,593 --> 00:00:04,793
+Analicé veinte mil setecientos setenta
 
 4
-00:00:05,651 --> 00:00:07,898
+00:00:04,793 --> 00:00:06,766
 y cuatro establecimientos de salud
 
 5
-00:00:07,898 --> 00:00:09,439
+00:00:06,766 --> 00:00:08,119
 del registro del MINSA.
 
 6
-00:00:10,189 --> 00:00:11,645
+00:00:08,589 --> 00:00:09,640
 Lima y Callao tienen el
 
 7
-00:00:11,645 --> 00:00:13,222
+00:00:09,640 --> 00:00:10,779
 treinta y seis por ciento
 
 8
-00:00:13,222 --> 00:00:14,253
+00:00:10,779 --> 00:00:11,523
 de la población,
 
 9
-00:00:14,253 --> 00:00:16,255
+00:00:11,523 --> 00:00:12,969
 pero concentran treinta y cuatro
 
 10
-00:00:16,255 --> 00:00:17,771
+00:00:12,969 --> 00:00:14,063
 de los cincuenta y cinco
 
 11
-00:00:17,771 --> 00:00:19,469
+00:00:14,063 --> 00:00:15,289
 hospitales de tercer nivel.
 
 12
-00:00:20,300 --> 00:00:22,888
+00:00:15,820 --> 00:00:18,399
 Dieciséis de los veinticinco departamentos
 
 13
-00:00:22,888 --> 00:00:25,055
+00:00:18,399 --> 00:00:20,379
 no tienen ningún establecimiento de
 
 14
-00:00:25,055 --> 00:00:26,560
+00:00:20,379 --> 00:00:21,800
 tercer nivel registrado.
 
 15
-00:00:27,450 --> 00:00:29,032
+00:00:22,250 --> 00:00:23,710
 Amazonas tiene el doble de
 
 16
-00:00:29,032 --> 00:00:31,259
+00:00:23,710 --> 00:00:25,250
 establecimientos por habitante que el
 
 17
-00:00:31,259 --> 00:00:31,845
-promedio.
+00:00:25,250 --> 00:00:26,089
+promedio nacional.
 
 18
-00:00:31,845 --> 00:00:33,252
+00:00:26,429 --> 00:00:27,969
 Pero siete de cada diez
 
 19
-00:00:33,252 --> 00:00:34,893
+00:00:27,969 --> 00:00:29,289
 de sus centros públicos son
 
 20
-00:00:34,893 --> 00:00:35,890
+00:00:29,289 --> 00:00:30,109
 puestos básicos.
 
 21
-00:00:37,400 --> 00:00:38,718
+00:00:31,079 --> 00:00:32,256
 Y casi nueve de cada
 
 22
-00:00:38,718 --> 00:00:41,168
-diez establecimientos nuevos entre dos
+00:00:32,256 --> 00:00:34,551
+diez establecimientos que abrieron entre
 
 23
-00:00:41,168 --> 00:00:42,361
-mil ocho y dos mil
+00:00:34,551 --> 00:00:35,615
+dos mil ocho y dos
 
 24
-00:00:42,361 --> 00:00:44,120
-diecisiete fueron privados.
+00:00:35,615 --> 00:00:37,239
+mil diecisiete son privados.
 
 25
-00:00:45,190 --> 00:00:47,154
+00:00:37,670 --> 00:00:39,410
 Más locales no significa más
 
 26
-00:00:47,154 --> 00:00:47,899
+00:00:39,410 --> 00:00:39,990
 capacidad.
 
 27
-00:00:47,899 --> 00:00:49,525
-Explora los datos en el
+00:00:40,649 --> 00:00:41,990
+Explora el mapa y los
 
 28
-00:00:49,525 --> 00:00:50,270
-dashboard.
+00:00:41,990 --> 00:00:42,950
+filtros en el dashboard.
 

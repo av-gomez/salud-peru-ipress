@@ -1,7 +1,8 @@
 .venv/
 __pycache__/
+# reel: voz propia, audios intermedios y cuadros regenerables (python reel/visuales.py)
 reel/.venv/
 reel/mi_voz.*
-reel/salidas/*.wav
-reel/salidas/escena_*.json
-reel/salidas/log_reel.txt
+reel/visuales/
+reel/salidas/*
+!reel/salidas/portada.png
